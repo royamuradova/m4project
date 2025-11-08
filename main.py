@@ -1,49 +1,54 @@
-from postfix_evaluator import PostfixEvaluator
-from infix_converter import InfixToPostfixConverter
+# main.py
+from singly_linked_list import SinglyLinkedList
+from split_evens_odds import SplitEvensOdds
 
-def test_postfix():
-    print("----- Postfix Evaluator -----")
-    tests = [
-        "5 3 +",
-        "8 2 - 3 +",
-        "5 3 8 * +",
-        "6 2 / 3 +",
-        "5 8 + 3 -",
-        "5 3 + 8 *",
-        "8 2 3 * + 6 -",
-        "5 3 8 * + 2 /",
-        "8 2 + 3 6 * -",
-        "5 3 + 8 2 / -",
-    ]
-    for expr in tests:
-        val = PostfixEvaluator.evaluate(expr)
-        # Display rule to match expected lines:
-        # If the expression contains '/', show as float (keep .0 / .5 etc);
-        # otherwise, show as int if it's mathematically an integer.
-        if "/" in expr:
-            out = f"{val}"
-        else:
-            out = f"{int(val) if float(val).is_integer() else val}"
-        print(f"[{expr}] = {out}")
+def test_singly_linked_list():
+    sll = SinglyLinkedList()
+    print("---- Build a forward list ----")
+    sll.build_list_forward([10, 20, 30, 40, 50])
+    print(str(sll))
+    print("Delete the first node:", end=" ")
+    sll.delete_first(); print(str(sll))
+    print("Delete the last node:", end=" ")
+    sll.delete_last(); print(str(sll))
+    print("Delete the interior node:", end=" ")
+    sll.delete_value(30); print(str(sll))
 
-def test_infix_to_postfix():
-    print("\n----- Infix to Postfix Converter -----")
-    tests = [
-        "A + B",
-        "A + B * C",
-        "( A + B ) * C",
-        "A * B + C / D",
-        "( A + B ) * ( C - D )",
-        "A + B * C - D / E",
-        "A * ( B + C ) / D",
-        "( A + B * C ) / ( D - E )",
-        "A +  ( B - C ) * D",
-        "( A + B * ( C - D ) ) / E",
-    ]
-    for expr in tests:
-        out = InfixToPostfixConverter.convert(expr)
-        print(f"[{expr}] -> [{out}]")
+    print("\n---- Build a backward list ----")
+    sll.build_list_backward([50, 40, 30, 20, 10])
+    print(str(sll))
+    print("Delete the first node:", end=" ")
+    sll.delete_first(); print(str(sll))
+    print("Delete the last node:", end=" ")
+    sll.delete_last(); print(str(sll))
+    print("Delete the interior node:", end=" ")
+    sll.delete_value(30); print(str(sll))
+
+    print("\n---- Non-recursive reverse print test----")
+    sll = SinglyLinkedList()
+    sll.build_list_forward([10, 20, 30, 40, 50])
+    print("Insertion order:", str(sll))
+    print("Reverse order (non-recursive):", sll.display_reverse_nr())
+
+    print("\n---- Remove all test ----")
+    sll = SinglyLinkedList()
+    sll.build_list_forward([1, 2, 4, 6, 1, 3, 6])
+    print(str(sll))
+    print("Removing 1 and all duplicates:", end=" ")
+    sll.remove_all(1); print(str(sll))
+    print("Removing 6 and all duplicates:", end=" ")
+    sll.remove_all(6); print(str(sll))
+
+def test_split_evens_odds():
+    base = SplitEvensOdds()
+    base.build_list_forward([1,2,3,4,5,6,7,8,15,14,13,12,11,10,9])
+    print(str(base))
+    evens, odds = base.split_even_odd()
+    print(str(evens))
+    print(str(odds))
+    print(str(base))  # original should now be empty → "Head -> None"
 
 if __name__ == "__main__":
-    test_postfix()
-    test_infix_to_postfix()
+    test_singly_linked_list()
+    print()
+    test_split_evens_odds()
